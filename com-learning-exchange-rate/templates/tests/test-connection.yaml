@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "com-learning-exchange-rate.fullname" . }}-test-connection"
+  labels:
+    {{- include "com-learning-exchange-rate.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "com-learning-exchange-rate.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
