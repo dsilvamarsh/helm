@@ -1,0 +1,66 @@
+I0127 11:58:30.257665   52285 warnings.go:110] "Warning: spec.SessionAffinity is ignored for headless services"
+NAME: postgres
+LAST DEPLOYED: Tue Jan 27 11:58:30 2026
+NAMESPACE: infra-services
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+CHART NAME: postgresql
+CHART VERSION: 18.2.3
+APP VERSION: 18.1.0
+
+⚠ WARNING: Since August 28th, 2025, only a limited subset of images/charts are available for free.
+    Subscribe to Bitnami Secure Images to receive continued support and security updates.
+    More info at https://bitnami.com and https://github.com/bitnami/containers/issues/83267
+
+** Please be patient while the chart is being deployed **
+
+PostgreSQL can be accessed via port 5432 on the following DNS names from within your cluster:
+
+    postgres-postgresql.infra-services.svc.cluster.local - Read/Write connection
+
+To get the password for "postgres" run:
+
+    export POSTGRES_ADMIN_PASSWORD=$(kubectl get secret --namespace infra-services postgres-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d)
+
+To get the password for "dev_user" run:
+
+    export POSTGRES_PASSWORD=$(kubectl get secret --namespace infra-services postgres-postgresql -o jsonpath="{.data.password}" | base64 -d)
+
+To connect to your database run the following command:
+
+    kubectl run postgres-postgresql-client --rm --tty -i --restart='Never' --namespace infra-services --image docker.io/bitnami/postgresql:17.6.0-debian-12-r4 --env="PGPASSWORD=$POSTGRES_PASSWORD" \
+      --command -- psql --host postgres-postgresql -U dev_user -d dev_db -p 5432
+
+    > NOTE: If you access the container using bash, make sure that you execute "/opt/bitnami/scripts/postgresql/entrypoint.sh /bin/bash" in order to avoid the error "psql: local user with ID 1001} does not exist"
+
+To connect to your database from outside the cluster execute the following commands:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace infra-services -w postgres-postgresql'
+
+    export SERVICE_IP=$(kubectl get svc --namespace infra-services postgres-postgresql --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+    PGPASSWORD="$POSTGRES_PASSWORD" psql --host $SERVICE_IP --port 5432 -U dev_user -d dev_db
+
+WARNING: The configured password will be ignored on new installation in case when previous PostgreSQL release was deleted through the helm command. In that case, old PVC will have an old password, and setting it through helm won't take effect. Deleting persistent volumes (PVs) will solve the issue.
+
+WARNING: There are "resources" sections in the chart not set. Using "resourcesPreset" is not recommended for production. For production installations, please set the following values according to your workload needs:
+  - primary.resources
+  - readReplicas.resources
++info https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
+⚠ SECURITY WARNING: Original containers have been substituted. This Helm chart was designed, tested, and validated on multiple platforms using a specific set of Bitnami and Tanzu Application Catalog containers. Substituting other containers is likely to cause degraded security and performance, broken chart features, and missing environment variables.
+
+Substituted images detected:
+  - docker.io/bitnami/postgresql:17.6.0-debian-12-r4
+  - docker.io/bitnami/os-shell:12-debian-12-r51
+  - docker.io/bitnami/postgres-exporter:0.17.1-debian-12-r16
+
+⚠ WARNING: Original containers have been retagged. Please note this Helm chart was tested, and validated on multiple platforms using a specific set of Bitnami and Bitnami Secure Images containers. Substituting original image tags could cause unexpected behavior.
+
+Retagged images:
+  - docker.io/bitnami/postgresql:17.6.0-debian-12-r4
+  - docker.io/bitnami/os-shell:12-debian-12-r51
+  - docker.io/bitnami/postgres-exporter:0.17.1-debian-12-r16
