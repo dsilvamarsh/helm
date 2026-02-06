@@ -1,2 +1,6 @@
 /.DS_Store
 /com-bank-core-currency
+infra-services/keycloak/keycloak.learning.localhost.com.pem
+infra-services/keycloak/keycloak.learning.localhost.com.key
+infra-services/keycloak/keycloak.learning.localhost.com.csr
+infra-services/keycloak/keycloak-keystore.p12
