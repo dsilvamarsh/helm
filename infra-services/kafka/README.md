@@ -2,9 +2,9 @@ https://strimzi.io/quickstarts/
 
 kubectl create namespace infra-services
 kubectl create -f 'https://strimzi.io/install/latest?namespace=infra-services' -n infra-services
-
+kubectl delete -f 'https://strimzi.io/install/latest?namespace=infra-services' -n infra-services
 kubectl apply -f kafka-single-node.yaml -n infra-services 
-
+kubectl delete -f kafka-single-node.yaml -n infra-services
 produce messages to kafka 
 
 kubectl -n infra-services run kafka-producer -ti --image=quay.io/strimzi/kafka:0.50.0-kafka-4.1.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server kafka-cluster-kafka-bootstrap:9092 --topic my-topic

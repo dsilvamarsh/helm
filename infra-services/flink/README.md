@@ -7,7 +7,7 @@ helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kuber
 helm install flink-kubernetes-operator -f values.yaml flink-operator-repo/flink-kubernetes-operator -n infra-services
 
 
-
+helm uninstall flink-kubernetes-operator -n infra-services
 
 
 
