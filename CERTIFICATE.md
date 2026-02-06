@@ -41,3 +41,18 @@ openssl x509 -req -extfile <(printf "subjectAltName=DNS:ingress.learning.localho
 
 openssl pkcs12 -export -in ingress.learning.localhost.com.crt -inkey ingress.learning.localhost.com.key -out ingress-keystore.p12 -name server -CAfile root_ca.pem -caname rootCA
 password : changeit
+
+
+
+# Keycloak host and TLS certificate
+openssl genrsa -aes256 -out keycloak.learning.localhost.com.key 2048
+
+password : changeit
+
+openssl req -new -key keycloak.learning.localhost.com.key -subj "/C=IN/ST=Maharashtra/L=Mumbai/O=Onepiece/OU=Security Dept/CN=keycloak.learning.localhost.com" -out keycloak.learning.localhost.com.csr
+
+openssl x509 -req -extfile <(printf "subjectAltName=DNS:keycloak.learning.localhost.com,IP:127.0.0.1") -in keycloak.learning.localhost.com.csr -CA root_ca.pem -CAkey root_ca.key -CAcreateserial -out keycloak.learning.localhost.com.crt -days 3650 -sha256
+
+
+openssl pkcs12 -export -in keycloak.learning.localhost.com.crt -inkey keycloak.learning.localhost.com.key -out keycloak-keystore.p12 -name server -CAfile root_ca.pem -caname rootCA
+password : changeit

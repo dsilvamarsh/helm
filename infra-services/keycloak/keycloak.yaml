@@ -1,0 +1,30 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak-learning
+spec:
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - env:
+              - name: KC_BOOTSTRAP_ADMIN_USERNAME
+                value: admin
+              - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+                value: admin
+  instances: 1
+  db:
+    vendor: postgres
+    host: postgres-postgresql-hl
+    usernameSecret:
+      name: keycloak-db-secret
+      key: username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: password
+  http:
+    tlsSecret: keycloak-tls-secret
+  hostname:
+    hostname: keycloak.learning.localhost.com
+  proxy:
+    headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
