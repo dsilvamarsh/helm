@@ -25,16 +25,19 @@ openssl rsa -in keycloak.learning.localhost.com.key -out keycloak.learning.local
 kubectl create secret tls keycloak-tls-secret --cert keycloak.learning.localhost.com.crt --key keycloak.learning.localhost.com.pem -n infra-services
 
 convert secrets to base64
-
+#Keycloak Externl databse config 
+1 : we need to create a databse
+    database: keycloak
+    user : keyclaok
+    password : keycloak
 echo -n 'keycloak' | base64
-
-kubectl apply -f db-secret.yaml -n infra-services
+kubeclt apply -f keycloak/db-secret.yaml -n infra-services  
 
 echo -n 'admin' | base64
 
-kubectl apply -f admin-secret.yaml -n infra-services
+kubectl apply -f keycloak/admin-secret.yaml -n infra-services
 
-kubectl apply -f keycloak.yaml -n infra-services
+kubectl apply -f keycloak/keycloak.yaml -n infra-services
 
 
 we need to expose the keycloak 
