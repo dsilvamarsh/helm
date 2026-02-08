@@ -94,7 +94,6 @@ httpRoute:
     namespace: infra-services
   # Hostnames matching HTTP header.
   hostnames:
-  - com-learning-exchange-rate.localhost
   - traefik.learning.localhost.com
   # List of rules and filters applied.
   rules:

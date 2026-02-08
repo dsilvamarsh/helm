@@ -11,7 +11,16 @@ gateway:
         - name: traefik-tls-secret  # Must be a 'kubernetes.io/tls' type secret
           kind: Secret
       namespacePolicy:
-        from: All  # Allows HTTPRoutes from other namespaces to use this 
+        from: All  # Allows HTTPRoutes from other namespaces to use this
+ports:
+  web:
+    # This section handles the redirect properly for the Helm chart
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
 logs:
   general:
     format: "json"
