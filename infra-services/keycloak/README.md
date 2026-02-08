@@ -38,8 +38,12 @@ echo -n 'admin' | base64
 kubectl apply -f keycloak/admin-secret.yaml -n infra-services
 
 kubectl apply -f keycloak/keycloak.yaml -n infra-services
+kubectl apply -f keycloak/keycloak-route.yaml -n infra-services
 
 
 we need to expose the keycloak 
 for testing we are doing a port forward 
 kubectl port-forward service/keycloak-learning-service 8443:8443 -n infra-services
+
+
+since our keyclaok is sitting behind a reverse proxy we need to make extra configs

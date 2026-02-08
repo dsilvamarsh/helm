@@ -23,7 +23,8 @@ spec:
       name: keycloak-db-secret
       key: password
   http:
-    tlsSecret: keycloak-tls-secret
+    httpEnabled: true
+    #tlsSecret: keycloak-tls-secret
   hostname:
     hostname: keycloak.learning.localhost.com
   proxy:
