@@ -1,8 +1,8 @@
-helm install com-learning-exchange-rate ./com-learning-exchange-rate -n nfra-services   
+helm install com-learning-exchange-rate ./com-learning-exchange-rate -n app-services   
 
-helm upgrade com-learning-exchange-rate ./com-learning-exchange-rate -n nfra-services   
+helm upgrade com-learning-exchange-rate ./com-learning-exchange-rate -n app-services   
 
-helm uninstall com-learning-exchange-rate -n nfra-services 
+helm uninstall com-learning-exchange-rate -n app-services 
 
 
 

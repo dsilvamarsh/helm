@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.3"
+  tag: "1.0.0"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -57,8 +57,6 @@ service:
   port: 80
   targetPort: 8080
 
-env:
-  SPRING_PROFILES_ACTIVE: "dev"
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
@@ -94,13 +92,14 @@ httpRoute:
     namespace: infra-services
   # Hostnames matching HTTP header.
   hostnames:
+  - com-learning-exchange-rate.localhost
   - traefik.learning.localhost.com
   # List of rules and filters applied.
   rules:
   - matches:
     - path:
         type: PathPrefix
-        value: /
+        value: /exchange-rate
   #   filters:
   #   - type: RequestHeaderModifier
   #     requestHeaderModifier:
@@ -132,11 +131,11 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: /actuator/health/liveness
+    path: /exchange-rate/actuator/health/liveness
     port: 8080
 readinessProbe:
   httpGet:
-    path: /actuator/health/readiness
+    path: /exchange-rate/actuator/health/readiness
     port: 8080
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
@@ -169,3 +168,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+#Config map
+app:
+  config:
+    SPRING_PROFILES_ACTIVE: "dev"
+  # Database Configuration
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db"
+    SPRING_DATASOURCE_USERNAME: "dev_user"
+    SPRING_DATASOURCE_PASSWORD: "dev_password"
+    SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+    SPRING_DATASOURCE_HIKARI_SCHEMA: "app"
