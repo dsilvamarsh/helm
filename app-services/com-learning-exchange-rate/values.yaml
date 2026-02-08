@@ -57,6 +57,8 @@ service:
   port: 80
   targetPort: 8080
 
+env:
+  SPRING_PROFILES_ACTIVE: "dev"
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
@@ -86,10 +88,14 @@ httpRoute:
   parentRefs:
   - name: traefik-gateway
     sectionName: web
-    namespace: dev
+    namespace: infra-services
+  - name: traefik-gateway-secure
+    sectionName: websecure
+    namespace: infra-services
   # Hostnames matching HTTP header.
   hostnames:
   - com-learning-exchange-rate.localhost
+  - traefik.learning.localhost.com
   # List of rules and filters applied.
   rules:
   - matches:

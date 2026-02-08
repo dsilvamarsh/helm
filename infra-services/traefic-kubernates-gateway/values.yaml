@@ -1,3 +1,23 @@
 providers:
   kubernetesGateway:
     enabled: true
+gateway:
+  listeners:
+    websecure:
+      port: 8443
+      protocol: HTTPS
+      mode: Terminate
+      certificateRefs:
+        - name: traefik-tls-secret  # Must be a 'kubernetes.io/tls' type secret
+          kind: Secret
+      namespacePolicy:
+        from: All  # Allows HTTPRoutes from other namespaces to use this 
+logs:
+  general:
+    format: "json"
+    level: TRACE
+  access:
+    enabled: true
+    fields:
+      headers:
+        defaultMode: keep
