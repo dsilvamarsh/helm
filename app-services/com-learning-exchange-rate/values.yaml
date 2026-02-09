@@ -131,12 +131,12 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: /exchange-rate/actuator/health/liveness
-    port: 8080
+    path: actuator/health/liveness
+    port: 9001
 readinessProbe:
   httpGet:
-    path: /exchange-rate/actuator/health/readiness
-    port: 8080
+    path: /actuator/health/readiness
+    port: 9001
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -173,9 +173,20 @@ affinity: {}
 app:
   config:
     SPRING_PROFILES_ACTIVE: "dev"
+    service.name: com-learning-exchange-rate
+    server.port: 8080
+    server.servlet.context-path: /exchange-rate
+    #Logging config
+    logging.structured.format.console: ecs
+    logging.level: DEBUG
+    logging.level.com.learning: DEBUG
+    spring.mvc.log-request-details: true
   # Database Configuration
     SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db"
     SPRING_DATASOURCE_USERNAME: "dev_user"
     SPRING_DATASOURCE_PASSWORD: "dev_password"
     SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
     SPRING_DATASOURCE_HIKARI_SCHEMA: "app"
+    # Actuator moves to localhost:9001/actuator
+    MANAGEMENT_SERVER_PORT: 9001
+    MANAGEMENT_ENDPOINTS_WEB_BASE-PATH: /actuator
