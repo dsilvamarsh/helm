@@ -190,9 +190,9 @@ app:
     # Actuator moves to localhost:9001/actuator
     management.server.port: 9001
     management.endpoints.web.base-path: /actuator
-    management.otlp.metrics.export.url: http://localhost:4318/v1/metrics
-    management.opentelemetry.tracing.export.otlp.endpoint: http://localhost:4318/v1/traces
-    management.opentelemetry.logging.export.otlp.endpoint: http://localhost:4318/v1/logs
+    management.otlp.metrics.export.url: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/metrics
+    management.opentelemetry.tracing.export.otlp.endpoint: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/traces
+    management.opentelemetry.logging.export.otlp.endpoint: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/logs
     management.otlp.metrics.export.enabled: true
     management.tracing.enabled: true
     management.opentelemetry.resource-attributes.service.name: com-learning-exchange-rate
