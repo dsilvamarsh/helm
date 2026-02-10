@@ -15,11 +15,28 @@ Isolate the database by creating a dedicated namespace for infrastructure servic
 ```bash
 kubectl create namespace infra-services
 
-### 2. Install Loki 
-helm install loki grafana/loki  -f loki/values.yaml -n infra-services
-### 3. Install Prometheus which will install grafan as well
-helm install prometheus prometheus-community/kube-prometheus-stack   -f prometheus/values.yaml -n infra-services
+###Open telimetary operator
+https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-operator
+
+### Install cert manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.2/cert-manager.yaml
+
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+
+helm install opentelemetry-operator open-telemetry/opentelemetry-operator \
+--set "manager.collectorImage.repository=ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s" \
+--namespace infra-services \
+--set admissionWebhooks.certManager.enabled=false \
+--set admissionWebhooks.autoGenerateCert.enabled=true
+
+### Install the collector
+kubectl apply -f open-telemetry-collector/deployment.yaml -n infra-services
 
 
-install grafana 
-https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+###Cleanup
+helm uninstall opentelemetry-operator
+kubectl delete crd opentelemetrycollectors.opentelemetry.io
+kubectl delete crd opampbridges.opentelemetry.io
+kubectl delete crd instrumentations.opentelemetry.io
+kubectl delete crd targetallocators.opentelemetry.io
