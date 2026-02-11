@@ -34,6 +34,9 @@ helm install opentelemetry-operator open-telemetry/opentelemetry-operator \
 kubectl apply -f open-telemetry-collector/deployment.yaml -n infra-services
 
 
+install grafana 
+https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/
+
 ###Cleanup
 helm uninstall opentelemetry-operator
 kubectl delete crd opentelemetrycollectors.opentelemetry.io
