@@ -175,7 +175,7 @@ app:
     JAVA_TOOL_OPTIONS: '-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0'
     SPRING_PROFILES_ACTIVE: "dev"
     service.name: com-learning-customer
-    server.port: 8081
+    server.port: 8080
     server.servlet.context-path: /customer-service
     spring.threads.virtual.enabled: true
     logging.structured.format.console: ecs
