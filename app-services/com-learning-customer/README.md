@@ -13,3 +13,8 @@ export APP_HOSTNAME=com-learning-customer.localhost
 Test in postman 
     curl --location 'http://localhost:80/exchange-rate' \
 --header 'Host: com-learning-customer.localhost'
+
+
+
+### Apply the keyclaok middlewhere plugin
+kubectl apply -f com-learning-customer/keycloak-middlewhere.yaml -n app-services

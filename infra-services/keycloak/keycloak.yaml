@@ -37,7 +37,7 @@ spec:
               - name: KC_BOOTSTRAP_ADMIN_PASSWORD
                 value: admin
               # Crucial for the /keycloak sub-path
-              - name: KC_HTTP_RELATIVE_PATH
-                value: /keycloak
-              - name: KC_HOSTNAME_PATH
-                value: /keycloak
+              # - name: KC_HTTP_RELATIVE_PATH
+              #   value: /keycloak
+              # - name: KC_HOSTNAME_PATH
+              #   value: /keycloak
