@@ -37,7 +37,22 @@ spec:
               - name: KC_BOOTSTRAP_ADMIN_PASSWORD
                 value: admin
               # Crucial for the /keycloak sub-path
-              # - name: KC_HTTP_RELATIVE_PATH
-              #   value: /keycloak
-              # - name: KC_HOSTNAME_PATH
-              #   value: /keycloak
+              - name: KC_HTTP_RELATIVE_PATH
+                value: /keycloak
+              - name: KC_HOSTNAME_PATH
+                value: /keycloak
+              # Use Port 9000 with the /keycloak prefix as verified by your curl
+            startupProbe:
+              httpGet:
+                path: /keycloak/health/started
+                port: 9000
+              failureThreshold: 30
+              periodSeconds: 5
+            livenessProbe:
+              httpGet:
+                path: /keycloak/health/live
+                port: 9000
+            readinessProbe:
+              httpGet:
+                path: /keycloak/health/ready
+                port: 9000
