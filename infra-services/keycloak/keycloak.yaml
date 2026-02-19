@@ -3,15 +3,6 @@ kind: Keycloak
 metadata:
   name: keycloak-learning
 spec:
-  unsupported:
-    podTemplate:
-      spec:
-        containers:
-          - env:
-              - name: KC_BOOTSTRAP_ADMIN_USERNAME
-                value: admin
-              - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-                value: admin
   instances: 1
   db:
     vendor: postgres
@@ -22,10 +13,31 @@ spec:
     passwordSecret:
       name: keycloak-db-secret
       key: password
+  
+  # Official way to handle the Hostname in the Operator
+  hostname:
+    hostname: traefik.learning.localhost.com
+    strict: true
+  
+  # Official way to handle the Proxy in the Operator
+  proxy:
+    headers: xforwarded 
+
   http:
     httpEnabled: true
-    #tlsSecret: keycloak-tls-secret
-  hostname:
-    hostname: keycloak.learning.localhost.com
-  proxy:
-    headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
+
+  # Use podTemplate ONLY for variables the Operator doesn't have a field for
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - env:
+              - name: KC_BOOTSTRAP_ADMIN_USERNAME
+                value: admin
+              - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+                value: admin
+              # Crucial for the /keycloak sub-path
+              - name: KC_HTTP_RELATIVE_PATH
+                value: /keycloak
+              - name: KC_HOSTNAME_PATH
+                value: /keycloak

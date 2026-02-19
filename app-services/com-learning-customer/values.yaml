@@ -100,6 +100,12 @@ httpRoute:
     - path:
         type: PathPrefix
         value: /customer-service
+    filters:
+      - type: ExtensionRef
+        extensionRef:
+          group: traefik.io
+          kind: Middleware
+          name: keycloakopenid # The name of your Middleware resource 
   #   filters:
   #   - type: RequestHeaderModifier
   #     requestHeaderModifier:
@@ -179,15 +185,15 @@ app:
     server.servlet.context-path: /customer-service
     spring.threads.virtual.enabled: true
     logging.structured.format.console: ecs
-    logging.level: DEBUG
+    logging.level: INFO
     logging.level.com.learning: DEBUG
-    logging.level.org.springframework.security: DEBUG
+    #logging.level.org.springframework.security: DEBUG
     # Logs the SQL queries
-    logging.level.org.springframework.jdbc: DEBUG
-    logging.level.org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    #logging.level.org.springframework.jdbc: DEBUG
+    #logging.level.org.springframework.jdbc.core.JdbcTemplate: DEBUG
     # Logs the prepared statement parameters (TRACE level is required for parameters)
-    logging.level.org.springframework.jdbc.core.StatementCreatorUtils: TRACE
-    logging.level.org.springframework.data.relational: DEBUG
+    #logging.level.org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+    #logging.level.org.springframework.data.relational: DEBUG
     spring.mvc.log-request-details: true
     #DB config
     spring.datasource.url: jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db
