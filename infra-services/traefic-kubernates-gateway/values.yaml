@@ -3,6 +3,7 @@ providers:
     enabled: true
   kubernetesCRD: # This MUST be here to handle the "Middleware" resource
     enabled: true
+    allowCrossNamespace: true
 gateway:
   listeners:
     websecure:

@@ -92,7 +92,6 @@ httpRoute:
     namespace: infra-services
   # Hostnames matching HTTP header.
   hostnames:
-  - com-learning-customer.localhost
   - traefik.learning.localhost.com
   # List of rules and filters applied.
   rules:
@@ -137,7 +136,7 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: actuator/health/liveness
+    path: /actuator/health/liveness
     port: 9001
 readinessProbe:
   httpGet:
@@ -194,6 +193,7 @@ app:
     # Logs the prepared statement parameters (TRACE level is required for parameters)
     #logging.level.org.springframework.jdbc.core.StatementCreatorUtils: TRACE
     #logging.level.org.springframework.data.relational: DEBUG
+    logging.level.org.springframework.security: TRACE
     spring.mvc.log-request-details: true
     #DB config
     spring.datasource.url: jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db
@@ -203,8 +203,8 @@ app:
     spring.datasource.hikari.schema: app
     spring.sql.init.mode: NEVER
     #OAUTH and OPENID security configs
-    spring.security.oauth2.resourceserver.jwt.issuer-url: http://keycloak-learning-service.infra-services.svc.cluster.local:8080/realms/dev
-    spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak-learning-service.infra-services.svc.cluster.local:8080/realms/dev/protocol/openid-connect/certs
+    spring.security.oauth2.resourceserver.jwt.issuer-url: http://keycloak-learning-service.infra-services.svc.cluster.local/keycloak/realms/dev
+    spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak-learning-service.infra-services.svc.cluster.local/keycloak/realms/dev/protocol/openid-connect/certs
     #Telemitary
     management.server.port: 9001
     management.endpoints.web.base-path: /actuator

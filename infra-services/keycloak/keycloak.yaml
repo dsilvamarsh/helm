@@ -16,7 +16,7 @@ spec:
   
   # Official way to handle the Hostname in the Operator
   hostname:
-    hostname: traefik.learning.localhost.com
+    hostname: keycloak.learning.localhost.com
     strict: true
   
   # Official way to handle the Proxy in the Operator
@@ -38,21 +38,25 @@ spec:
                 value: admin
               # Crucial for the /keycloak sub-path
               - name: KC_HTTP_RELATIVE_PATH
-                value: /keycloak
+                value: /
               - name: KC_HOSTNAME_PATH
-                value: /keycloak
+                value: /
+              - name: KC_PROXY
+                value: "edge"
+              - name: KC_HOSTNAME_BACKCHABBEL_DYNAMIC
+                value: true
               # Use Port 9000 with the /keycloak prefix as verified by your curl
             startupProbe:
               httpGet:
-                path: /keycloak/health/started
+                path: /health/started
                 port: 9000
               failureThreshold: 30
               periodSeconds: 5
             livenessProbe:
               httpGet:
-                path: /keycloak/health/live
+                path: /health/live
                 port: 9000
             readinessProbe:
               httpGet:
-                path: /keycloak/health/ready
+                path: /health/ready
                 port: 9000
