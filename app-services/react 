@@ -1,0 +1,21 @@
+[!] Unexpected XCode version string ''
+error 
+Installing Cocoapods failed. This doesn't affect project initialization and you can safely proceed. However, you will need to install Cocoapods manually when running iOS, follow additional steps in "Run instructions for iOS" section.
+
+error Looks like your iOS environment is not properly set. Please go to https://reactnative.dev/docs/set-up-your-environment?os=macos&platform=ios&guide=native and follow the React Native CLI QuickStart guide for macOS and iOS.
+
+  
+  Run instructions for Android:
+    • Have an Android emulator running (quickest way to get started), or a device connected.
+    • cd "/Users/dsilvamarsh/workspace/git/shanks" && npx react-native run-android
+  
+  Run instructions for iOS:
+    • cd "/Users/dsilvamarsh/workspace/git/shanks"
+    
+    • npx react-native run-ios
+    - or -
+    • Open shanks/ios/shanks.xcodeproj in Xcode or run "xed -b ios"
+    • Hit the Run button
+    
+  Run instructions for macOS:
+    • See https://microsoft.github.io/react-native-macos for the latest up-to-date instructions.

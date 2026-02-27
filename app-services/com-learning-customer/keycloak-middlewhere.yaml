@@ -1,0 +1,18 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: keycloakopenid
+  namespace: app-services
+spec:
+  plugin:
+    keycloakopenid:
+      # Use the INTERNAL address for Traefik-to-Keycloak communication
+      #KeycloakURL: https://keycloak.learning.localhost.com
+      #RedirectURL: http://keycloak-learning-service.infra-services.svc.cluster.local:8080
+      KeycloakURL: https://keycloak.learning.localhost.com
+      ClientID: "keycloak-middlewhere-b2b-client"
+      ClientSecret: "FnKPX2vaLLweabHU5m9KkFeixh8TPJ6C"      
+      KeycloakRealm: "dev"
+      Scope: 'openid'
+      TokenCookieName: 'AUTH_TOKEN'
+      UseAuthHeader: true

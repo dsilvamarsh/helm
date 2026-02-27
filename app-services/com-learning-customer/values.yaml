@@ -1,4 +1,4 @@
-# Default values for com-learning-exchange-rate.
+# Default values for com-learning-customer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,11 +7,11 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: dsilvamarsh/com-learning-exchange-rate
+  repository: dsilvamarsh/com-learning-customer
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.3"
+  tag: "1.0.0"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -98,7 +98,13 @@ httpRoute:
   - matches:
     - path:
         type: PathPrefix
-        value: /exchange-rate
+        value: /customer-service
+    filters:
+      - type: ExtensionRef
+        extensionRef:
+          group: traefik.io
+          kind: Middleware
+          name: keycloakopenid # The name of your Middleware resource 
   #   filters:
   #   - type: RequestHeaderModifier
   #     requestHeaderModifier:
@@ -130,7 +136,7 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: actuator/health/liveness
+    path: /actuator/health/liveness
     port: 9001
 readinessProbe:
   httpGet:
@@ -173,26 +179,36 @@ app:
   config:
     JAVA_TOOL_OPTIONS: '-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0'
     SPRING_PROFILES_ACTIVE: "dev"
-    service.name: com-learning-exchange-rate
+    service.name: com-learning-customer
     server.port: 8080
-    server.servlet.context-path: /exchange-rate
-    #Logging config
+    server.servlet.context-path: /customer-service
+    spring.threads.virtual.enabled: true
     logging.structured.format.console: ecs
-    logging.level: DEBUG
+    logging.level: INFO
     logging.level.com.learning: DEBUG
+    #logging.level.org.springframework.security: DEBUG
+    # Logs the SQL queries
+    #logging.level.org.springframework.jdbc: DEBUG
+    #logging.level.org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    # Logs the prepared statement parameters (TRACE level is required for parameters)
+    #logging.level.org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+    #logging.level.org.springframework.data.relational: DEBUG
+    logging.level.org.springframework.security: TRACE
     spring.mvc.log-request-details: true
-  # Database Configuration
-    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db"
-    SPRING_DATASOURCE_USERNAME: "dev_user"
-    SPRING_DATASOURCE_PASSWORD: "dev_password"
-    SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
-    SPRING_DATASOURCE_HIKARI_SCHEMA: "app"
-    # Actuator moves to localhost:9001/actuator
+    #DB config
+    spring.datasource.url: jdbc:postgresql://postgres-postgresql.infra-services.svc.cluster.local:5432/dev_db
+    spring.datasource.username: dev_user
+    spring.datasource.password: dev_password
+    spring.datasource.driver-class-name: org.postgresql.Driver
+    spring.datasource.hikari.schema: app
+    spring.sql.init.mode: NEVER
+    #OAUTH and OPENID security configs
+    spring.security.oauth2.resourceserver.jwt.issuer-url: http://keycloak-learning-service.infra-services.svc.cluster.local/keycloak/realms/dev
+    spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://keycloak-learning-service.infra-services.svc.cluster.local/keycloak/realms/dev/protocol/openid-connect/certs
+    #Telemitary
     management.server.port: 9001
     management.endpoints.web.base-path: /actuator
     management.otlp.metrics.export.url: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/metrics
     management.opentelemetry.tracing.export.otlp.endpoint: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/traces
     management.opentelemetry.logging.export.otlp.endpoint: http://metrics-collector.infra-services.svc.cluster.local:4318/v1/logs
-    management.otlp.metrics.export.enabled: true
-    management.tracing.enabled: true
-    management.opentelemetry.resource-attributes.service.name: com-learning-exchange-rate
+    management.opentelemetry.resource-attributes.service.name: com-learning-customer

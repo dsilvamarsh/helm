@@ -1,0 +1,5 @@
+curl -v localhost:8080/customer-service/customer/1
+
+
+keycloak-learning-service.infra-services.svc.cluster.local
+rewrite name keycloak.learning.localhost.com keycloak-learning-service.infra-services.svc.cluster.local

@@ -3,15 +3,6 @@ kind: Keycloak
 metadata:
   name: keycloak-learning
 spec:
-  unsupported:
-    podTemplate:
-      spec:
-        containers:
-          - env:
-              - name: KC_BOOTSTRAP_ADMIN_USERNAME
-                value: admin
-              - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-                value: admin
   instances: 1
   db:
     vendor: postgres
@@ -22,10 +13,50 @@ spec:
     passwordSecret:
       name: keycloak-db-secret
       key: password
-  http:
-    httpEnabled: true
-    #tlsSecret: keycloak-tls-secret
+  
+  # Official way to handle the Hostname in the Operator
   hostname:
     hostname: keycloak.learning.localhost.com
+    strict: true
+  
+  # Official way to handle the Proxy in the Operator
   proxy:
-    headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
+    headers: xforwarded 
+
+  http:
+    httpEnabled: true
+
+  # Use podTemplate ONLY for variables the Operator doesn't have a field for
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - env:
+              - name: KC_BOOTSTRAP_ADMIN_USERNAME
+                value: admin
+              - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+                value: admin
+              # Crucial for the /keycloak sub-path
+              - name: KC_HTTP_RELATIVE_PATH
+                value: /
+              - name: KC_HOSTNAME_PATH
+                value: /
+              - name: KC_PROXY
+                value: "edge"
+              - name: KC_HOSTNAME_BACKCHABBEL_DYNAMIC
+                value: true
+              # Use Port 9000 with the /keycloak prefix as verified by your curl
+            startupProbe:
+              httpGet:
+                path: /health/started
+                port: 9000
+              failureThreshold: 30
+              periodSeconds: 5
+            livenessProbe:
+              httpGet:
+                path: /health/live
+                port: 9000
+            readinessProbe:
+              httpGet:
+                path: /health/ready
+                port: 9000

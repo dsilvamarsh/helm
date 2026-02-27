@@ -1,6 +1,9 @@
 providers:
   kubernetesGateway:
     enabled: true
+  kubernetesCRD: # This MUST be here to handle the "Middleware" resource
+    enabled: true
+    allowCrossNamespace: true
 gateway:
   listeners:
     websecure:
@@ -30,3 +33,9 @@ logs:
     fields:
       headers:
         defaultMode: keep
+# Traefik middlewhere
+experimental:
+  plugins:
+    keycloakopenid:
+      moduleName: "github.com/Gwojda/keycloakopenid"
+      version: "v0.1.36"

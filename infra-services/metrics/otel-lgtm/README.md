@@ -1,0 +1,1 @@
+kubectl apply -f otel-lgtm/deployment.yaml -n infra-services 
