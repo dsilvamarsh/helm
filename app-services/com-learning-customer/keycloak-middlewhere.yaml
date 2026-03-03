@@ -9,7 +9,8 @@ spec:
       # Use the INTERNAL address for Traefik-to-Keycloak communication
       #KeycloakURL: https://keycloak.learning.localhost.com
       #RedirectURL: http://keycloak-learning-service.infra-services.svc.cluster.local:8080
-      KeycloakURL: https://keycloak.learning.localhost.com
+      KeycloakURL: http://keycloak-learning-service.infra-services.svc.cluster.local:8080
+      RedirectKeycloakURL: https://keycloak.learning.localhost.com
       ClientID: "keycloak-middlewhere-b2b-client"
       ClientSecret: "FnKPX2vaLLweabHU5m9KkFeixh8TPJ6C"      
       KeycloakRealm: "dev"

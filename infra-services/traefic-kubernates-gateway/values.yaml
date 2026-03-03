@@ -37,5 +37,8 @@ logs:
 experimental:
   plugins:
     keycloakopenid:
-      moduleName: "github.com/Gwojda/keycloakopenid"
-      version: "v0.1.36"
+      moduleName: "github.com/dsilvamarsh/traefik-keycloak-middleware"
+      version: "v1.0.0"
+    # keycloakopenid:
+    #   moduleName: "github.com/Gwojda/keycloakopenid"
+    #   version: "v0.1.36"
