@@ -14,8 +14,12 @@ EOF
 NOTE: we can create our own namesapce and replace it in the -n option
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
+### Install Traefik 
 helm install  traefik traefik/traefik   -n infra-services  -f traefic-kubernates-gateway/values.yaml
+### Upgrade Traefik
 helm upgrade  traefik traefik/traefik   -n infra-services  -f traefic-kubernates-gateway/values.yaml
+### Uninstall Traefik
+helm uninstall  traefik traefik/traefik   -n infra-services
 
 ### Middle where installation
  kubectl apply -f traefic-kubernates-gateway/keycloak-middlewhere.yaml -n infra-services 

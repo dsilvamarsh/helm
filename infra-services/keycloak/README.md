@@ -8,10 +8,12 @@ kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resourc
 
 
 kubectl create namespace infra-services
+### Create keyclaok Operator
 kubectl -n infra-services apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.5.2/kubernetes/kubernetes.yml
 
 
-
+### Delete Keyclaok Operator
+kubectl -n infra-services delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.5.2/kubernetes/kubernetes.yml 
 https://www.keycloak.org/operator/basic-deployment
 
 FOR TLS secured connections make a host entry in local machine
@@ -38,6 +40,7 @@ echo -n 'admin' | base64
 kubectl apply -f keycloak/admin-secret.yaml -n infra-services
 
 kubectl apply -f keycloak/keycloak.yaml -n infra-services
+kubectl delete -f keycloak/keycloak.yaml -n infra-services
 kubectl apply -f keycloak/keycloak-route.yaml -n infra-services
 
 
