@@ -1,0 +1,35 @@
+NAME: airflow
+LAST DEPLOYED: Fri Mar 20 16:00:51 2026
+NAMESPACE: infra-services
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+Thank you for installing Apache Airflow 3.1.7!
+
+Your release is named airflow.
+You can now access your dashboard(s) by executing the following command(s) and visiting the corresponding port at localhost in your browser:
+Airflow API Server:     kubectl port-forward svc/airflow-api-server 8080:8080 --namespace infra-services
+Default user (Airflow UI) Login credentials:
+    username: admin
+    password: admin
+Default Postgres connection credentials:
+    username: postgres
+    password: postgres
+    port: 5432
+
+You can get Fernet Key value by running the following:
+
+    echo Fernet Key: $(kubectl get secret --namespace infra-services airflow-fernet-key -o jsonpath="{.data.fernet-key}" | base64 --decode)
+
+
+#####################################################
+#  WARNING: You should set a static API secret key  #
+#####################################################
+
+You are using a dynamically generated API secret key, which can lead to
+unnecessary restarts of your Airflow components.
+
+Information on how to set a static API secret key can be found here:
+https://airflow.apache.org/docs/helm-chart/stable/production-guide.html#api-secret-key

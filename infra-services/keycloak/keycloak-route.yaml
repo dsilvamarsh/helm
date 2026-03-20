@@ -2,13 +2,19 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: keycloak-route
+  namespace: infra-services
 spec:
   parentRefs:
-    - name: traefik
+    - name: traefik-gateway-secure # Ensure this matches your Gateway name
       sectionName: websecure
+      namespace: infra-services
   hostnames:
-    - "keycloak.learning.localhost.com"
+  - keycloak.learning.localhost.com
   rules:
-    - backendRefs:
-        - name: keycloak-learning-service
-          port: 8080
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: keycloak-learning-service
+      port: 8080

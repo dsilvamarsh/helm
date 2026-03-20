@@ -1,0 +1,10 @@
+# templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "com-learning-customer.fullname" . }}-configmap
+data:
+  # Iterate over the values defined in values.yaml
+  {{- range $key, $value := .Values.app.config }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}

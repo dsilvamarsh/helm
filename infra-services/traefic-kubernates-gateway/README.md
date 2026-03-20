@@ -14,9 +14,15 @@ EOF
 NOTE: we can create our own namesapce and replace it in the -n option
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
+### Install Traefik 
 helm install  traefik traefik/traefik   -n infra-services  -f traefic-kubernates-gateway/values.yaml
+### Upgrade Traefik
 helm upgrade  traefik traefik/traefik   -n infra-services  -f traefic-kubernates-gateway/values.yaml
+### Uninstall Traefik
+helm uninstall  traefik traefik/traefik   -n infra-services
 
+### Middle where installation
+ kubectl apply -f traefic-kubernates-gateway/keycloak-middlewhere.yaml -n infra-services 
 
 kubectl create secret tls keycloak-tls-secret --cert keycloak.learning.localhost.com.crt --key keycloak.learning.localhost.com.pem -n infra-services
 
@@ -37,3 +43,5 @@ we need to load the key and the certificate in kubernates secret to be able to l
 openssl rsa -in traefik.learning.localhost.com.key -out traefik.learning.localhost.com.pem
 
 kubectl create secret tls traefik-tls-secret --cert traefik.learning.localhost.com.crt --key traefik.learning.localhost.com.pem -n infra-services
+
+
